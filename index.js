@@ -338,6 +338,7 @@ async function startCloudflared(argoArgs) {
 
     const onLineHandler = (chunk) => {
       const cleanLine = chunk.replace(/\u001b\[[0-9;]*m/g, "");
+      if (/ERR|error|invalid|fail|unauthor/i.test(cleanLine)) log(`[cloudflared] ${cleanLine.replace(/eyJ[A-Za-z0-9_\-=]+/g, "<token>").slice(0, 300)}`);
 
       const connMatch = cleanLine.match(/connIndex=(\d+)/i) || cleanLine.match(/"connIndex":(\d+)/i);
       const locMatch = cleanLine.match(/(?:location|region)["=:\s]+([a-zA-Z0-9]{3,4})/i) ||
